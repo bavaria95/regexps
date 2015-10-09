@@ -13,6 +13,12 @@ def get_department(content):
     r = re.compile(pattern)
     return r.search(content).group(1)
 
+def get_keywords(content):
+    # <META NAME="KLUCZOWE_1" CONTENT="KUWEJT">
+    pattern = r'<META NAME="KLUCZOWE_\d+" CONTENT="(.*)">'
+    r = re.compile(pattern)
+    return r.findall(content)
+
 
 def processFile(filepath):
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
@@ -23,7 +29,7 @@ def processFile(filepath):
     print("nazwa pliku:", filepath)
     print("autor:", get_author(content))
     print("dzial:", get_department(content))
-    print("slowa kluczowe:")
+    print("slowa kluczowe:", get_keywords(content))
     print("liczba zdan:")
     print("liczba skrotow:")
     print("liczba liczb calkowitych z zakresu int:")
