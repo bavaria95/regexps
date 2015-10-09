@@ -8,6 +8,12 @@ def get_author(content):
     r = re.compile(pattern)
     return r.search(content).group(1)
 
+def get_department(content):
+    pattern = r'<META NAME="DZIAL" CONTENT="(.*)">'
+    r = re.compile(pattern)
+    return r.search(content).group(1)
+
+
 def processFile(filepath):
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
 
@@ -16,7 +22,7 @@ def processFile(filepath):
     fp.close()
     print("nazwa pliku:", filepath)
     print("autor:", get_author(content))
-    print("dzial:")
+    print("dzial:", get_department(content))
     print("slowa kluczowe:")
     print("liczba zdan:")
     print("liczba skrotow:")
