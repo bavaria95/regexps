@@ -1,21 +1,21 @@
-
 import os
 import sys
 import re
 import codecs
+
+def get_author(content):
+    pattern = r'<META NAME="AUTOR" CONTENT="(.*)">'
+    r = re.compile(pattern)
+    return r.search(content).group(1)
 
 def processFile(filepath):
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
 
     content = fp.read()
 
-#
-#  INSERT YOUR CODE HERE
-#
-
     fp.close()
     print("nazwa pliku:", filepath)
-    print("autor:")
+    print("autor:", get_author(content))
     print("dzial:")
     print("slowa kluczowe:")
     print("liczba zdan:")
