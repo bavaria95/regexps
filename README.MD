@@ -1,0 +1,1 @@
+In this task I was supposed to gather some information from each file in selected directory with regular expressions.
