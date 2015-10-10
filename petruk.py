@@ -72,6 +72,15 @@ def get_number_of_emails():
 
     return len(s)
 
+def get_number_of_ints():
+    global content
+
+    pattern = r'\D((?:[-+ ]?)(?:(?:\d{1,4})|(?:[12]\d{4})|(?:3[01]\d{3})|(?:32[0-6]\d{2})|(?:327[0-5]\d)|(?:3276[0-7]))|(?:-32768))\D'
+    r = re.compile(pattern)
+    s = set(r.findall(content))
+    content = r.sub('', content)
+
+    return len(s)
 
 def processFile(filepath):
     global content # making it global to be able remove already found parts easily 
@@ -87,8 +96,9 @@ def processFile(filepath):
 
     dates_q = str(get_number_of_diff_dates())
     acronyms_q = str(get_number_of_acronyms())
-    # print(len(content))
     emails_q = str(get_number_of_emails())
+    ints_q = str(get_number_of_ints())
+    # print(len(content))
     # print(len(content))
 
 
@@ -98,7 +108,7 @@ def processFile(filepath):
     print("slowa kluczowe: " + keywords)
     print("liczba zdan:")
     print("liczba skrotow: " + acronyms_q)
-    print("liczba liczb calkowitych z zakresu int:")
+    print("liczba liczb calkowitych z zakresu int: " + ints_q)
     print("liczba liczb zmiennoprzecinkowych:")
     print("liczba dat: " + dates_q)
     print("liczba adresow email: " + emails_q)
