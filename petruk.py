@@ -89,5 +89,4 @@ for root, dirs, files in tree:
         if f.endswith(".html"):
             filepath = os.path.join(root, f)
             processFile(filepath)
-            break
 
