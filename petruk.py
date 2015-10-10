@@ -17,7 +17,7 @@ def get_keywords(content):
     # <META NAME="KLUCZOWE_1" CONTENT="KUWEJT">
     pattern = r'<META NAME="KLUCZOWE_\d+" CONTENT="(.*)">'
     r = re.compile(pattern)
-    return r.findall(content)
+    return filter(None, r.findall(content)) # filter to remove empty keywords
 
 
 def processFile(filepath):
@@ -26,10 +26,10 @@ def processFile(filepath):
     content = fp.read()
 
     fp.close()
-    print("nazwa pliku:", filepath)
-    print("autor:", get_author(content))
-    print("dzial:", get_department(content))
-    print("slowa kluczowe:", get_keywords(content))
+    print("nazwa pliku: " + filepath)
+    print("autor: " + get_author(content))
+    print("dzial:" + get_department(content))
+    print("slowa kluczowe: " + '; '.join(get_keywords(content)))
     print("liczba zdan:")
     print("liczba skrotow:")
     print("liczba liczb calkowitych z zakresu int:")
