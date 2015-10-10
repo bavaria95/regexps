@@ -7,7 +7,7 @@ def get_middle_text(content):
     '''
     returns text between first <P> tag and first <META> tag
     '''
-    pattern = r'<P>(.*)<META'
+    pattern = r'<P>(.*?)<META'
     r = re.compile(pattern, re.DOTALL)
     return r.search(content).group(1)
 
@@ -25,6 +25,7 @@ def get_keywords(content):
     pattern = r'<META NAME="KLUCZOWE_\d+" CONTENT="(.*)">'
     r = re.compile(pattern)
     return filter(None, r.findall(content)) # filter to remove empty keywords
+
 
 def processFile(filepath):
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
@@ -61,5 +62,4 @@ for root, dirs, files in tree:
         if f.endswith(".html"):
             filepath = os.path.join(root, f)
             processFile(filepath)
-
 
