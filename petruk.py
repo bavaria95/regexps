@@ -52,6 +52,15 @@ def get_number_of_diff_dates():
 
     return len(s)
 
+def get_number_of_acronyms():
+    global content
+    s = set()
+
+    pattern = r'[\s><,?!)(]([a-zA-Z]{1,3})\.[\s><,?!)(]'
+    r = re.compile(pattern)
+    return len(set(r.findall(content)))
+
+
 
 def processFile(filepath):
     global content # making it global to be able remove already found parts easily 
@@ -66,13 +75,15 @@ def processFile(filepath):
     content = get_middle_text(content) # since we don't need full text anymore
 
     dates_q = str(get_number_of_diff_dates())
+    acronyms_q = str(get_number_of_acronyms())
+
 
     print("nazwa pliku: " + filepath)
     print("autor: " + author)
     print("dzial:" + department)
     print("slowa kluczowe: " + keywords)
     print("liczba zdan:")
-    print("liczba skrotow:")
+    print("liczba skrotow: " + acronyms_q)
     print("liczba liczb calkowitych z zakresu int:")
     print("liczba liczb zmiennoprzecinkowych:")
     print("liczba dat: " + dates_q)
