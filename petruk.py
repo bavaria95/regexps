@@ -82,6 +82,16 @@ def get_number_of_ints():
 
     return len(s)
 
+def get_number_of_floats():
+    global content
+
+    pattern = r'\D([-+]?(?:(?:\d*\.\d+)|(?:\d+\.?))(?:[Ee][+-]?\d+)?)\D'
+    r = re.compile(pattern)
+    s = set(r.findall(content))
+    content = r.sub('', content)
+
+    return len(s)
+
 def processFile(filepath):
     global content # making it global to be able remove already found parts easily 
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
@@ -99,6 +109,7 @@ def processFile(filepath):
     emails_q = str(get_number_of_emails())
     ints_q = str(get_number_of_ints())
     # print(len(content))
+    floats_q = str(get_number_of_floats())
     # print(len(content))
 
 
@@ -109,7 +120,7 @@ def processFile(filepath):
     print("liczba zdan:")
     print("liczba skrotow: " + acronyms_q)
     print("liczba liczb calkowitych z zakresu int: " + ints_q)
-    print("liczba liczb zmiennoprzecinkowych:")
+    print("liczba liczb zmiennoprzecinkowych: " + floats_q)
     print("liczba dat: " + dates_q)
     print("liczba adresow email: " + emails_q)
     print("\n")
