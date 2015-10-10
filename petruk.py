@@ -54,12 +54,23 @@ def get_number_of_diff_dates():
 
 def get_number_of_acronyms():
     global content
-    s = set()
 
     pattern = r'[\s><,?!)(]([a-zA-Z]{1,3})\.[\s><,?!)(]'
     r = re.compile(pattern)
-    return len(set(r.findall(content)))
+    s = set(r.findall(content))
+    content = r.sub('', content)
 
+    return len(s)
+
+def get_number_of_emails():
+    global content
+
+    pattern = r'\W(\w*@\w+(?:\.\w+)+)[^\w.]'
+    r = re.compile(pattern)
+    s = set(r.findall(content))
+    content = r.sub('', content)
+
+    return len(s)
 
 
 def processFile(filepath):
@@ -76,6 +87,9 @@ def processFile(filepath):
 
     dates_q = str(get_number_of_diff_dates())
     acronyms_q = str(get_number_of_acronyms())
+    # print(len(content))
+    emails_q = str(get_number_of_emails())
+    # print(len(content))
 
 
     print("nazwa pliku: " + filepath)
@@ -87,7 +101,7 @@ def processFile(filepath):
     print("liczba liczb calkowitych z zakresu int:")
     print("liczba liczb zmiennoprzecinkowych:")
     print("liczba dat: " + dates_q)
-    print("liczba adresow email:")
+    print("liczba adresow email: " + emails_q)
     print("\n")
 
 
