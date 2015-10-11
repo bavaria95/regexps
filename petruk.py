@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import codecs
+import unicodedata
 
 def get_middle_text(content):
     '''
@@ -54,7 +55,7 @@ def get_number_of_diff_dates():
 def get_number_of_acronyms():
     global content
 
-    pattern = r'[\s><,?!)(]([a-zA-Z]{1,3})\.[\s><,?!)(]'
+    pattern = r'[\W ]([a-zA-Z]{1,3})\.[\W ]'
     r = re.compile(pattern)
     s = set(r.findall(content))
     content = r.sub('', content)
@@ -91,6 +92,17 @@ def get_number_of_floats():
 
     return len(s)
 
+def get_number_of_sentences():
+    global content
+
+    pattern = r'[!?.]+'
+    r = re.compile(pattern, re.MULTILINE)
+
+    return len(r.split(content))
+
+def to_ascii(string):
+    return unicodedata.normalize('NFKD', unicode(string)).encode('ascii', 'ignore')
+
 def processFile(filepath):
     global content # making it global to be able remove already found parts easily 
     fp = codecs.open(filepath, 'rU', 'iso-8859-2')
@@ -100,23 +112,20 @@ def processFile(filepath):
     author = get_author(content)
     department = get_department(content)
     keywords = '; '.join(get_keywords(content))
-
-    content = get_middle_text(content) # since we don't need full text anymore
+    content = to_ascii(get_middle_text(content)) # since we don't need full text anymore
 
     dates_q = str(get_number_of_diff_dates())
     acronyms_q = str(get_number_of_acronyms())
     emails_q = str(get_number_of_emails())
     ints_q = str(get_number_of_ints())
-    # print(len(content))
     floats_q = str(get_number_of_floats())
-    # print(len(content))
-
+    sentences_q = str(get_number_of_sentences())
 
     print("nazwa pliku: " + filepath)
     print("autor: " + author)
     print("dzial:" + department)
     print("slowa kluczowe: " + keywords)
-    print("liczba zdan:")
+    print("liczba zdan: " + sentences_q)
     print("liczba skrotow: " + acronyms_q)
     print("liczba liczb calkowitych z zakresu int: " + ints_q)
     print("liczba liczb zmiennoprzecinkowych: " + floats_q)
@@ -140,4 +149,4 @@ for root, dirs, files in tree:
         if f.endswith(".html"):
             filepath = os.path.join(root, f)
             processFile(filepath)
-
+            # break
