@@ -43,11 +43,10 @@ def get_number_of_diff_dates():
     content = r.sub('', content) # removing dates from text
 
     # another type of date representation(could be written with first one, but because of named groups the code is much simpler now)
-    pattern = r'(?P<full>((?P<date>(0[1-9]|[12][0-9]|3[01])[./-](0[13578]|1[02])|((0[1-9]|[12][0-9])[./-](02))|(0[1-9]|[12][0-9]|3[0])[./-](0[469]|11))[./-](?P<year>\d{4})))'
+    pattern = r'(?P<full>(?:(?P<date>(?:0[1-9]|[12][0-9]|3[01])(?P<sep1>[./-])(?:0[13578]|1[02])|(?:(0[1-9]|[12][0-9])(?P<sep2>[./-])(?:02))|(0[1-9]|[12][0-9]|3[0])(?P<sep3>[./-])(?:0[469]|11))(?:(?P=sep1)|(?P=sep2)|(?P=sep3))(?P<year>\d{4})))'
     r = re.compile(pattern)
     for x in r.finditer(content):
-        if re.match(r'\d{2}(?P<separ>[./-])\d{2}(?P=separ)\d{4}', x.group('full')):  # check if separator is the same
-            s.add(tuple(re.split(r'[./-]', x.group('date')) + [x.group('year')]))
+        s.add(tuple(re.split(r'[./-]', x.group('date')) + [x.group('year')]))
     content = r.sub('', content)
 
     return len(s)
